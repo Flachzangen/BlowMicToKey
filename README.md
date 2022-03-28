@@ -2,8 +2,8 @@
 
 Presses keyboard key if microphone blow is detected
 
-First time run will generate a config file.
-Settings like sensitivity can be adjusted there.
+Settings like sensitivity can be adjusted in the config file.
+The default Key is 'F'.
 
 This script works both with Windows and Linux.
-An Executable (.exe) is provided in the release section.
+An Executable (.exe) for Windows is provided in the release section.
