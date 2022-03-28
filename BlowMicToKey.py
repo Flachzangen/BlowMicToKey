@@ -10,6 +10,8 @@ def main():
 
     sensitivity, key, pressTime = config_handler()
 
+    prnt_info()
+
     kb = Controller()
 
     with sd.InputStream(samplerate=1764, channels=1, dtype='float32') as stream:
@@ -42,9 +44,14 @@ def config_handler():
         config.set('notes', '; press_time is the time in seconds for how long the key is pressed', None)
         with open ('config.cfg', 'w') as configfile:
             config.write(configfile)
-        print('Generated config file because either no config was found or it was invalid, exit in approx. 5 seconds')
+        print('Generated config file because either no config was found or it was invalid, exit in approx. 5 seconds\n')
         time.sleep(5)
         exit()
+
+
+def prnt_info():
+    print('BlowMicToKey version 1.0\n\n')
+    print('Running...\n')
 
 
 if __name__ == "__main__":
