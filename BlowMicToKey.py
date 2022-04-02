@@ -5,14 +5,16 @@ import configparser
 from scipy.fft import fft
 from pynput.keyboard import Controller
 from PyQt5 import QtWidgets, QtGui
+from distutils.util import strtobool
 from threading import Thread
 import sys
 
 
 def main():
-    sensitivity, key, pressTime = config_handler()
+    sensitivity, key, pressTime, enableTray = config_handler()
 
-    Thread(target=run_tray).start()
+    if strtobool(enableTray):
+        Thread(target=run_tray).start()
 
     prnt_info()
 
@@ -35,17 +37,21 @@ def config_handler():
         sensitivity = float(config['config']['sensitivity'])
         key = config['config']['key_to_press']
         pressTime = float(config['config']['press_time'])
-        return sensitivity, key, pressTime
+        enableTray = config['config']['enable_tray']
+        return sensitivity, key, pressTime, enableTray
     except KeyError:
         config = configparser.ConfigParser(allow_no_value=True)
         config.add_section('config')
         config.set('config', 'sensitivity', '0.1')
         config.set('config', 'key_to_press', 'f')
         config.set('config', 'press_time', '0.05')
+        config.set('config', 'enable_tray', 'True')
         config.add_section('notes')
-        config.set('notes', '; sensitivity value between 0 to 1', None)
+        config.set('notes', '; sensitivity value between 0 to 1, lower value means more sensitive', None)
         config.set('notes', '; key_to_press examples: a, f12, esc, num_lock, delete', None)
         config.set('notes', '; press_time is the time in seconds for how long the key is pressed', None)
+        config.set('notes', '; enable_tray enables tray icon when true for easy quit/exit of the application on', None)
+        config.set('notes', '; windows and some desktop environments on linux', None)
         with open('config.cfg', 'w') as configfile:
             config.write(configfile)
         print('Generated config file because either no config was found or it was invalid, exit in approx. 5 seconds\n')
